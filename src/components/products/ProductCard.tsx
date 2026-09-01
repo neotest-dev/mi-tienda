@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Eye, ImageOff } from 'lucide-react'
+import { ImageOff } from 'lucide-react'
 import { WhatsAppButton } from '../ui/WhatsAppButton'
 import { formatPrice } from '../../utils/formatters'
 import type { ProductWithCategory } from '../../types/store'
@@ -13,49 +13,50 @@ export function ProductCard({ product }: ProductCardProps) {
   const productSlug = product.slug || product.id
 
   return (
-    <div className="group bg-white rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col overflow-hidden">
-      {/* Image container */}
-      <div className="relative aspect-square bg-slate-100 overflow-hidden">
-        {product.image_url ? (
-          <img
-            src={product.image_url}
-            alt={product.name}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-            loading="lazy"
-          />
-        ) : (
-          <div className="w-full h-full flex flex-col items-center justify-center text-slate-400 bg-slate-50">
-            <ImageOff className="h-10 w-10 mb-1 stroke-1" />
-            <span className="text-xs">Sin imagen</span>
+    <div className="group bg-white rounded-2xl border border-slate-200/80 shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col overflow-hidden">
+      {/* Clickable Card Link */}
+      <Link to={`/producto/${productSlug}`} className="flex-1 flex flex-col">
+        {/* Image container */}
+        <div className="relative aspect-square bg-slate-100 overflow-hidden">
+          {product.image_url ? (
+            <img
+              src={product.image_url}
+              alt={product.name}
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              loading="lazy"
+            />
+          ) : (
+            <div className="w-full h-full flex flex-col items-center justify-center text-slate-400 bg-slate-50">
+              <ImageOff className="h-8 w-8 sm:h-10 sm:w-10 mb-1 stroke-1" />
+              <span className="text-[10px] sm:text-xs">Sin imagen</span>
+            </div>
+          )}
+          <span className="absolute top-2 left-2 sm:top-3 sm:left-3 bg-white/90 backdrop-blur-md text-slate-800 text-[10px] sm:text-xs font-semibold px-2 py-0.5 sm:px-3 sm:py-1 rounded-full shadow-xs truncate max-w-[85%]">
+            {categoryName}
+          </span>
+        </div>
+
+        {/* Content */}
+        <div className="p-3.5 sm:p-5 flex-1 flex flex-col justify-between">
+          <div>
+            <h3 className="font-bold text-slate-900 text-xs sm:text-base line-clamp-2 mb-1.5 sm:mb-2 group-hover:text-indigo-600 transition-colors">
+              {product.name}
+            </h3>
+            <p className="text-sm sm:text-xl font-extrabold text-indigo-600 mb-2 sm:mb-4">
+              {formatPrice(product.price)}
+            </p>
           </div>
-        )}
-        <span className="absolute top-3 left-3 bg-white/90 backdrop-blur-md text-slate-800 text-xs font-semibold px-2.5 py-1 rounded-full shadow-sm">
-          {categoryName}
-        </span>
-      </div>
-
-      {/* Content */}
-      <div className="p-5 flex-1 flex flex-col justify-between">
-        <div>
-          <h3 className="font-bold text-slate-900 text-base line-clamp-2 mb-2 group-hover:text-indigo-600 transition-colors">
-            {product.name}
-          </h3>
-          <p className="text-xl font-extrabold text-slate-900 mb-4">
-            {formatPrice(product.price)}
-          </p>
         </div>
+      </Link>
 
-        {/* Buttons */}
-        <div className="flex flex-col gap-2 pt-2 border-t border-slate-100">
-          <Link
-            to={`/producto/${productSlug}`}
-            className="w-full inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold rounded-xl transition-colors"
-          >
-            <Eye className="h-4 w-4" />
-            <span>Ver producto</span>
-          </Link>
-          <WhatsAppButton product={product} fullWidth label="Comprar por WhatsApp" />
-        </div>
+      {/* Direct Buy Action - Full width, wide button on PC */}
+      <div className="p-3 sm:p-5 pt-0">
+        <WhatsAppButton
+          product={product}
+          fullWidth
+          label="Comprar ahora"
+          size="md"
+        />
       </div>
     </div>
   )

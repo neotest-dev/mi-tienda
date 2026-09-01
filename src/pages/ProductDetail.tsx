@@ -134,11 +134,8 @@ export function ProductDetail() {
                 product={product}
                 fullWidth
                 size="lg"
-                label="Comprar por WhatsApp"
+                label="Comprar ahora"
               />
-              <p className="text-center text-xs text-slate-400 mt-3">
-                Serás redirigido a WhatsApp con los datos de este producto listos para enviar.
-              </p>
             </div>
           </div>
         </div>

@@ -1,4 +1,4 @@
-import { MessageCircle } from 'lucide-react'
+import { ShoppingBag } from 'lucide-react'
 import { useStore } from '../../context/StoreContext'
 import { buildWhatsAppUrl } from '../../utils/whatsapp'
 import type { Product } from '../../types/store'
@@ -13,7 +13,7 @@ interface WhatsAppButtonProps {
 export function WhatsAppButton({
   product,
   fullWidth = false,
-  label = 'Comprar por WhatsApp',
+  label = 'Comprar ahora',
   size = 'md',
 }: WhatsAppButtonProps) {
   const { settings } = useStore()
@@ -23,9 +23,9 @@ export function WhatsAppButton({
   const whatsappUrl = buildWhatsAppUrl(whatsappNumber, product, currentUrl)
 
   const sizeClasses = {
-    sm: 'px-3 py-1.5 text-xs gap-1.5',
-    md: 'px-4 py-2.5 text-sm gap-2 font-medium',
-    lg: 'px-6 py-3.5 text-base gap-2.5 font-semibold',
+    sm: 'px-3.5 py-2 text-xs gap-1.5 font-semibold',
+    md: 'px-5 py-3 text-sm gap-2 font-bold',
+    lg: 'px-8 py-4 text-base gap-2.5 font-bold',
   }[size]
 
   return (
@@ -33,11 +33,12 @@ export function WhatsAppButton({
       href={whatsappUrl}
       target="_blank"
       rel="noopener noreferrer"
-      className={`inline-flex items-center justify-center bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white rounded-xl shadow-sm hover:shadow transition-all duration-200 cursor-pointer ${sizeClasses} ${
+      onClick={(e) => e.stopPropagation()}
+      className={`inline-flex items-center justify-center bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white rounded-xl shadow-md hover:shadow-lg transition-all duration-200 cursor-pointer ${sizeClasses} ${
         fullWidth ? 'w-full' : ''
       }`}
     >
-      <MessageCircle className={size === 'lg' ? 'h-6 w-6' : 'h-4 w-4'} />
+      <ShoppingBag className={size === 'lg' ? 'h-6 w-6' : 'h-4 w-4'} />
       <span>{label}</span>
     </a>
   )

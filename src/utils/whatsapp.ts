@@ -50,12 +50,11 @@ export function buildWhatsAppUrl(
   try {
     cleanNumber = normalizePeruWhatsAppNumber(whatsappNumber)
   } catch {
-    // Fallback cleanup if unnormalized
     cleanNumber = whatsappNumber.replace(/\D/g, '')
   }
 
   const messageLines = [
-    'Hola, estoy interesado en este producto:',
+    'Hola, deseo comprar este producto:',
     '',
     `*${product.name}*`,
     `Precio: ${formatPrice(product.price)}`,
@@ -65,7 +64,7 @@ export function buildWhatsAppUrl(
     messageLines.push(`Link: ${currentUrl}`)
   }
 
-  messageLines.push('', 'Quisiera más información.')
+  messageLines.push('', '¿Cuáles son los métodos de pago disponibles?')
 
   const rawMessage = messageLines.join('\n')
   const encodedMessage = encodeURIComponent(rawMessage)

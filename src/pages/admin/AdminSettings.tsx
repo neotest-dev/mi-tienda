@@ -4,6 +4,7 @@ import { updateStoreSettings } from '../../services/settings'
 import { uploadImage } from '../../lib/storage'
 import { normalizePeruWhatsAppNumber } from '../../utils/whatsapp'
 import { LoadingSpinner } from '../../components/ui/LoadingSpinner'
+import { InstagramIcon, FacebookIcon, TikTokIcon } from '../../components/ui/SocialIcons'
 import {
   Save,
   Store,
@@ -12,9 +13,9 @@ import {
   Loader2,
   CheckCircle,
   X,
-  Globe,
   Share2,
   AlertCircle,
+  MapPin,
 } from 'lucide-react'
 
 export function AdminSettings() {
@@ -72,7 +73,6 @@ export function AdminSettings() {
     if (!settings?.id) return
     if (!storeName.trim()) return setError('El nombre de la tienda es obligatorio.')
 
-    // Validar y normalizar el número de WhatsApp para Perú (+51)
     let normalizedPhone = ''
     try {
       normalizedPhone = normalizePeruWhatsAppNumber(whatsappNumber)
@@ -176,7 +176,7 @@ export function AdminSettings() {
                 />
               </div>
               <p className="text-xs text-slate-400 mt-1">
-                Acepta: <code className="font-mono">+51 972874719</code> o <code className="font-mono">972874719</code> (Celular de 9 dígitos)
+                Acepta: <code className="font-mono">+51 972874719</code> o <code className="font-mono">972874719</code>
               </p>
             </div>
           </div>
@@ -258,7 +258,7 @@ export function AdminSettings() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
               <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                <Globe className="h-3.5 w-3.5 text-pink-600" /> Instagram
+                <InstagramIcon className="h-4 w-4 text-pink-600 fill-pink-600" /> Instagram
               </label>
               <input
                 type="text"
@@ -271,7 +271,7 @@ export function AdminSettings() {
 
             <div>
               <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                <Globe className="h-3.5 w-3.5 text-blue-600" /> Facebook
+                <FacebookIcon className="h-4 w-4 text-blue-600 fill-blue-600" /> Facebook
               </label>
               <input
                 type="text"
@@ -284,7 +284,7 @@ export function AdminSettings() {
 
             <div>
               <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                <Share2 className="h-3.5 w-3.5 text-slate-800" /> TikTok
+                <TikTokIcon className="h-4 w-4 text-slate-900 fill-slate-900" /> TikTok
               </label>
               <input
                 type="text"
@@ -297,8 +297,8 @@ export function AdminSettings() {
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">
-              Dirección Física (Opcional)
+            <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+              <MapPin className="h-4 w-4 text-indigo-600" /> Dirección Física (Opcional)
             </label>
             <input
               type="text"

@@ -102,16 +102,16 @@ export function AdminProducts() {
   )
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">Administrar Productos</h1>
-          <p className="text-slate-500 text-sm mt-1">Crea, edita o elimina productos del catálogo</p>
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Administrar Productos</h1>
+          <p className="text-slate-500 text-xs sm:text-sm mt-1">Crea, edita o elimina productos del catálogo</p>
         </div>
         <button
           onClick={handleOpenCreate}
-          className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm rounded-xl shadow-lg shadow-indigo-600/30 transition-all cursor-pointer"
+          className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm rounded-xl shadow-lg shadow-indigo-600/30 transition-all cursor-pointer w-full sm:w-auto"
         >
           <Plus className="h-4 w-4" />
           <span>Nuevo Producto</span>
@@ -121,20 +121,20 @@ export function AdminProducts() {
       {/* Toast Feedback */}
       {toastMessage && (
         <div className="p-4 bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm font-semibold rounded-xl animate-fade-in flex items-center gap-2">
-          <CheckCircle className="h-5 w-5 text-emerald-600" />
+          <CheckCircle className="h-5 w-5 text-emerald-600 shrink-0" />
           <span>{toastMessage}</span>
         </div>
       )}
 
       {/* Search & Filters */}
-      <div className="flex flex-col sm:flex-row gap-4 bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+      <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs">
         <div className="relative flex-1">
           <Search className="absolute left-3.5 top-3 h-4 w-4 text-slate-400" />
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Buscar por nombre de producto..."
+            placeholder="Buscar producto por nombre..."
             className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-600"
           />
         </div>
@@ -152,16 +152,90 @@ export function AdminProducts() {
         </select>
       </div>
 
-      {/* Content Table */}
+      {/* Content */}
       {loading ? (
         <LoadingSpinner text="Cargando productos..." />
       ) : filteredProducts.length === 0 ? (
-        <div className="bg-white p-12 text-center rounded-2xl border border-slate-200 text-slate-500">
+        <div className="bg-white p-12 text-center rounded-2xl border border-slate-200/80 text-slate-500">
           No hay productos que coincidan con la búsqueda.
         </div>
       ) : (
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-          <div className="overflow-x-auto">
+        <>
+          {/* Mobile Card View (No Horizontal Scroll Needed) */}
+          <div className="grid grid-cols-1 gap-3 md:hidden">
+            {filteredProducts.map((product) => (
+              <div
+                key={product.id}
+                className="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs space-y-3"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="h-14 w-14 rounded-xl bg-slate-100 overflow-hidden shrink-0 border border-slate-200/80 flex items-center justify-center">
+                    {product.image_url ? (
+                      <img
+                        src={product.image_url}
+                        alt={product.name}
+                        className="h-full w-full object-cover"
+                      />
+                    ) : (
+                      <ImageOff className="h-6 w-6 text-slate-400 stroke-1" />
+                    )}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-bold text-slate-900 text-sm truncate">{product.name}</h3>
+                    <p className="text-xs text-slate-400 truncate">
+                      {product.category?.name || 'Sin categoría'}
+                    </p>
+                    <p className="text-sm font-extrabold text-indigo-600 mt-0.5">
+                      {formatPrice(product.price)}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between pt-2 border-t border-slate-100">
+                  <button
+                    onClick={() => handleToggleActive(product)}
+                    className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold cursor-pointer transition-colors ${
+                      product.active
+                        ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                        : 'bg-slate-100 text-slate-500 border border-slate-200'
+                    }`}
+                  >
+                    {product.active ? (
+                      <>
+                        <CheckCircle className="h-3.5 w-3.5 text-emerald-600" />
+                        Activo
+                      </>
+                    ) : (
+                      <>
+                        <XCircle className="h-3.5 w-3.5 text-slate-400" />
+                        Inactivo
+                      </>
+                    )}
+                  </button>
+
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => handleOpenEdit(product)}
+                      className="p-2 text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors cursor-pointer bg-slate-50"
+                      title="Editar"
+                    >
+                      <Edit2 className="h-4 w-4" />
+                    </button>
+                    <button
+                      onClick={() => handleDelete(product)}
+                      className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer bg-slate-50"
+                      title="Eliminar"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Desktop Table View */}
+          <div className="hidden md:block bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden">
             <table className="w-full text-left text-sm text-slate-600">
               <thead className="bg-slate-50 border-b border-slate-100 text-xs font-semibold uppercase text-slate-400 tracking-wider">
                 <tr>
@@ -241,7 +315,7 @@ export function AdminProducts() {
               </tbody>
             </table>
           </div>
-        </div>
+        </>
       )}
 
       {/* Product Form Modal */}
